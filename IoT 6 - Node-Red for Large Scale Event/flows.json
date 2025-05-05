@@ -1,0 +1,961 @@
+[
+    {
+        "id": "69e90637c603590c",
+        "type": "tab",
+        "label": "IoT MQTT Flow",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "591a962e6a4759c9",
+        "type": "mqtt-broker",
+        "name": "localhost",
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "a7430d4f5f299fe1",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Global Sub",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 600,
+        "y": 100,
+        "wires": [
+            [
+                "0cd3da1b14f2fcf5"
+            ]
+        ]
+    },
+    {
+        "id": "4c42589970c9ef8c",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Global Announcement",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "kumbhmela/global/announcement",
+        "payload": "",
+        "payloadType": "date",
+        "x": 253.99996948242188,
+        "y": 1180,
+        "wires": [
+            [
+                "ef87a97ab625581c"
+            ]
+        ]
+    },
+    {
+        "id": "ef87a97ab625581c",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Format Message",
+        "func": "msg.topic = \"kumbhmela/global/announcement\";\nmsg.payload = {\n    message: \"Emergency alert!\",\n    time: new Date().toISOString()\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 1180,
+        "wires": [
+            [
+                "c42f2bf09b5ada9a"
+            ]
+        ]
+    },
+    {
+        "id": "c42f2bf09b5ada9a",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/global/announcement",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 800,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "1d9d41bfc96aac78",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Traffic Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 820,
+        "wires": [
+            [
+                "8f670814ae9c97da"
+            ]
+        ]
+    },
+    {
+        "id": "8f670814ae9c97da",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "CongestedTraffic",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/traffic\";\nmsg.payload = {\n    status: \"Congested\",\n    vehicles: 50,\n    time: new Date().toISOString()\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 820,
+        "wires": [
+            [
+                "6d138ab6a494d31e"
+            ]
+        ]
+    },
+    {
+        "id": "61fbfcdf34be1911",
+        "type": "debug",
+        "z": "69e90637c603590c",
+        "name": "Global Mesage Log",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5af1097017cc5575",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Sector1 Sub",
+        "topic": "kumbhmela/sectors/sector1/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "a76197873180dc20"
+            ]
+        ]
+    },
+    {
+        "id": "bec92337fb61b897",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Sector2 Sub",
+        "topic": "kumbhmela/sectors/sector2/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 240,
+        "wires": [
+            [
+                "705b2d4e62e53507"
+            ]
+        ]
+    },
+    {
+        "id": "4afa5bd6b09c9bbc",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Sector3 Sub",
+        "topic": "kumbhmela/sectors/sector3/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 320,
+        "wires": [
+            [
+                "d80d7faf5a1a13df"
+            ]
+        ]
+    },
+    {
+        "id": "33ad3ae36452f8d6",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Sector4 Sub",
+        "topic": "kumbhmela/sectors/sector4/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 380,
+        "wires": [
+            [
+                "3dd219cedcd2ab19"
+            ]
+        ]
+    },
+    {
+        "id": "6d138ab6a494d31e",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/traffic",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 800,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "7b6235630ca20d5e",
+        "type": "debug",
+        "z": "69e90637c603590c",
+        "name": "Sector File Debugger",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "a76197873180dc20",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Sector1 Log",
+        "filename": "L:\\mosquitto-files\\sector1.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 450,
+        "y": 180,
+        "wires": [
+            [
+                "7b6235630ca20d5e"
+            ]
+        ]
+    },
+    {
+        "id": "705b2d4e62e53507",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Sector2 Log",
+        "filename": "L:\\mosquitto-files\\sector2.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 450,
+        "y": 240,
+        "wires": [
+            [
+                "7b6235630ca20d5e"
+            ]
+        ]
+    },
+    {
+        "id": "d80d7faf5a1a13df",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Sector3 Log",
+        "filename": "L:\\mosquitto-files\\sector3.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 450,
+        "y": 320,
+        "wires": [
+            [
+                "7b6235630ca20d5e"
+            ]
+        ]
+    },
+    {
+        "id": "3dd219cedcd2ab19",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Sector4 Log",
+        "filename": "L:\\mosquitto-files\\sector4.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 450,
+        "y": 380,
+        "wires": [
+            [
+                "7b6235630ca20d5e"
+            ]
+        ]
+    },
+    {
+        "id": "0cd3da1b14f2fcf5",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Global Log",
+        "filename": "L:\\mosquitto-files\\globalLog.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 870,
+        "y": 100,
+        "wires": [
+            [
+                "61fbfcdf34be1911"
+            ]
+        ]
+    },
+    {
+        "id": "add174486366ba24",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Sanitation Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 880,
+        "wires": [
+            [
+                "1d9a3eaae1393682"
+            ]
+        ]
+    },
+    {
+        "id": "f97ea62c7f777d3d",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Security Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 940,
+        "wires": [
+            [
+                "c79d80a2e23fcabb"
+            ]
+        ]
+    },
+    {
+        "id": "39dc5c8bf9d70049",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Crowd Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 1000,
+        "wires": [
+            [
+                "1bf6a7b9e958ce34"
+            ]
+        ]
+    },
+    {
+        "id": "8392b75595b7c61a",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Medical Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 1060,
+        "wires": [
+            [
+                "88449f2b996e5898"
+            ]
+        ]
+    },
+    {
+        "id": "c9a5d66a2a81ce58",
+        "type": "inject",
+        "z": "69e90637c603590c",
+        "name": "Logistics Input",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 1120,
+        "wires": [
+            [
+                "4257edb5e4152386"
+            ]
+        ]
+    },
+    {
+        "id": "1d9a3eaae1393682",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Sanitation Status",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/sanitation\";\nmsg.payload = { bins_emptied: 12, issues_reported: 2 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 880,
+        "wires": [
+            [
+                "542f920c221fccf2"
+            ]
+        ]
+    },
+    {
+        "id": "542f920c221fccf2",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/sanitation",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 810,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "cbef792c94c712f0",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/security",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 800,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "4eb2c35fe0d32083",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/crowd",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 800,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "5fbdd072b76e7997",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/medical",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 800,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "d93aa28f36fad397",
+        "type": "mqtt out",
+        "z": "69e90637c603590c",
+        "name": "",
+        "topic": "kumbhmela/sectors/sector1/logistics",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "591a962e6a4759c9",
+        "x": 810,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "c79d80a2e23fcabb",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Security Status",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/sanitation\";\nmsg.payload = { alerts: 0, patrols_active: 5 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 940,
+        "wires": [
+            [
+                "cbef792c94c712f0"
+            ]
+        ]
+    },
+    {
+        "id": "1bf6a7b9e958ce34",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Crowd Status",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/sanitation\";\nmsg.payload = { density: \"medium\", headcount: 450 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1000,
+        "wires": [
+            [
+                "4eb2c35fe0d32083"
+            ]
+        ]
+    },
+    {
+        "id": "88449f2b996e5898",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Medical Status",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/sanitation\";\nmsg.payload = { emergencies: 1, ambulances_available: 3 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1060,
+        "wires": [
+            [
+                "5fbdd072b76e7997"
+            ]
+        ]
+    },
+    {
+        "id": "4257edb5e4152386",
+        "type": "function",
+        "z": "69e90637c603590c",
+        "name": "Logistics Status",
+        "func": "msg.topic = \"kumbhmela/sectors/sector1/sanitation\";\nmsg.payload = { deliveries_pending: 4, vehicles_ready: 8 };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1120,
+        "wires": [
+            [
+                "d93aa28f36fad397"
+            ]
+        ]
+    },
+    {
+        "id": "5502c2d728033790",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Security Sub",
+        "topic": "kumbhmela/domains/security/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 510,
+        "y": 480,
+        "wires": [
+            [
+                "f8614a19c768ee8d"
+            ]
+        ]
+    },
+    {
+        "id": "21b3db851cd71ba0",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Sanitation Sub",
+        "topic": "kumbhmela/domains/sanitation/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 520,
+        "y": 540,
+        "wires": [
+            [
+                "b30167c5d15c6d1e"
+            ]
+        ]
+    },
+    {
+        "id": "1366bdab0889de58",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Crowd Sub",
+        "topic": "kumbhmela/domains/crowd/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 500,
+        "y": 600,
+        "wires": [
+            [
+                "fe809943b691b3ac"
+            ]
+        ]
+    },
+    {
+        "id": "04a9cdd8270686f1",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Medical Sub",
+        "topic": "kumbhmela/domains/medical/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 510,
+        "y": 680,
+        "wires": [
+            [
+                "25e8da446f6e0ce4"
+            ]
+        ]
+    },
+    {
+        "id": "7a015d8b441de454",
+        "type": "debug",
+        "z": "69e90637c603590c",
+        "name": "Domain File Debugger",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1177.999984741211,
+        "y": 601.9999847412109,
+        "wires": []
+    },
+    {
+        "id": "f8614a19c768ee8d",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Security Log",
+        "filename": "L:\\mosquitto-files\\security.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 877.9999847412109,
+        "y": 481.99998474121094,
+        "wires": [
+            [
+                "7a015d8b441de454"
+            ]
+        ]
+    },
+    {
+        "id": "b30167c5d15c6d1e",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Sanitation Log",
+        "filename": "L:\\mosquitto-files\\sanitation.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 887.9999847412109,
+        "y": 541.9999847412109,
+        "wires": [
+            [
+                "7a015d8b441de454"
+            ]
+        ]
+    },
+    {
+        "id": "fe809943b691b3ac",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Crowd Log",
+        "filename": "L:\\mosquitto-files\\crowd.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 877.9999847412109,
+        "y": 601.9999847412109,
+        "wires": [
+            [
+                "7a015d8b441de454"
+            ]
+        ]
+    },
+    {
+        "id": "25e8da446f6e0ce4",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Medical Log",
+        "filename": "L:\\mosquitto-files\\medical.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 877.9999847412109,
+        "y": 681.9999847412109,
+        "wires": [
+            [
+                "7a015d8b441de454"
+            ]
+        ]
+    },
+    {
+        "id": "10411d1234de9687",
+        "type": "mqtt in",
+        "z": "69e90637c603590c",
+        "name": "Logistics Sub",
+        "topic": "kumbhmela/domains/logistics/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "591a962e6a4759c9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 510,
+        "y": 740,
+        "wires": [
+            [
+                "f23f5b4ecd4447a8"
+            ]
+        ]
+    },
+    {
+        "id": "f23f5b4ecd4447a8",
+        "type": "file",
+        "z": "69e90637c603590c",
+        "name": "Logistics Log",
+        "filename": "L:\\mosquitto-files\\logistics.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 877.9999847412109,
+        "y": 741.9999847412109,
+        "wires": [
+            [
+                "7a015d8b441de454"
+            ]
+        ]
+    }
+]
